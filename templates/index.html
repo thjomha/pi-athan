@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Prayer Dashboard</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            text-align: center;
+            margin-top: 50px;
+        }
+        .btn {
+            padding: 15px 25px;
+            font-size: 18px;
+            margin: 10px;
+            cursor: pointer;
+        }
+        #prayer-times {
+            margin-top: 20px;
+            font-size: 20px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Prayer Times Dashboard</h1>
+
+    <div id="prayer-times">
+        <h2>Today's Prayer Times</h2>
+        <p>Fajr: {{ prayer_times.Fajr }}</p>
+        <p>Dhuhr: {{ prayer_times.Dhuhr }}</p>
+        <p>Asr: {{ prayer_times.Asr }}</p>
+        <p>Maghrib: {{ prayer_times.Maghrib }}</p>
+        <p>Isha: {{ prayer_times.Isha }}</p>
+    </div>
+
+    <!-- Buttons to trigger audio and stop audio on the server -->
+    <button class="btn" onclick="playAudioOnServer('/play_athan_server')">Play Athan</button>
+    <button class="btn" onclick="playAudioOnServer('/play_adhkar_server')">Play Adhkar</button>
+    <button class="btn" onclick="stopAudioOnServer()">Stop Audio</button>
+
+    <script>
+        // Function to send a POST request to play audio on the server
+        function playAudioOnServer(route) {
+            fetch(route, {
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        }
+
+        // Function to stop audio on the server
+        function stopAudioOnServer() {
+            fetch("/stop_audio", {
+                method: "POST"
+            })
+            .then(response => response.json())
+            .then(data => {
+                alert(data.message);
+            })
+            .catch(error => {
+                console.error("Error:", error);
+            });
+        }
+    </script>
+</body>
+</html>
